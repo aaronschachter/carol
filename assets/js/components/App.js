@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
+import activeComponent from 'react-router-active-component';
+
+let NavItem = activeComponent('li');
 
 export default React.createClass({
   render() {
@@ -18,8 +21,8 @@ export default React.createClass({
 		    </div>
 		    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul className="nav navbar-nav">
-		        <li><Link to="/campaigns" activeClassName="active">Campaigns</Link></li>
-		        <li><Link to="/members" activeClassName="active">Members</Link></li>
+		        <NavItem to="/campaigns" activeClassName="active">Campaigns</NavItem>
+		        <NavItem to="/members" activeClassName="active">Members</NavItem>
 		      </ul>
 		      <ul className="nav navbar-nav navbar-right">
 		        <li className="dropdown">
