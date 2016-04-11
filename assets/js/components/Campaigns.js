@@ -5,7 +5,7 @@ let NavItem = activeComponent('h2');
 
 export default React.createClass({
   fetchData: function() {
-    fetch('https://www.dosomething.org/api/v1/campaigns?count=10')
+    fetch('https://www.dosomething.org/api/v1/campaigns?count=100')
       .then((res) => {
           return res.json();
       }).then((json) => {
@@ -65,7 +65,10 @@ var CampaignsTable = React.createClass({
 
 var CampaignsListItem = React.createClass({
   render: function() {
-    var url = "/campaigns/" + this.props.campaign.id.toString();
+    var campaignId = this.props.campaign.id.toString();
+    localStorage['campaign_' + campaignId + '_title'] = this.props.campaign.title;
+    localStorage['campaign_' + campaignId + '_tagline'] = this.props.campaign.tagline;
+    var url = '/campaigns/' + campaignId;
     return (
       <div className="panel panel-default">
         <div className="panel-body">
