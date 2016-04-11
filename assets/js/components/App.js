@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router'
+import NavLink from './NavLink'
 import activeComponent from 'react-router-active-component';
-
 let NavItem = activeComponent('li');
 
 export default React.createClass({
@@ -17,12 +16,12 @@ export default React.createClass({
 		        <span className="icon-bar"></span>
 		        <span className="icon-bar"></span>
 		      </button>
-		      <Link className="navbar-brand" to="/campaigns"><img src="https://raw.githubusercontent.com/DoSomething/LetsDoThis-iOS/develop/Lets%20Do%20This/Images.xcassets/DS%20Logo.imageset/DS%20Logo.png" height="20" width="25" /></Link>
+		      <a className="navbar-brand"><img src="https://raw.githubusercontent.com/DoSomething/LetsDoThis-iOS/develop/Lets%20Do%20This/Images.xcassets/DS%20Logo.imageset/DS%20Logo.png" height="20" width="25" /></a>
 		    </div>
 		    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul className="nav navbar-nav">
-		        <NavItem to="/campaigns" activeClassName="active">Campaigns</NavItem>
-		        <NavItem to="/members" activeClassName="active">Members</NavItem>
+		        <NavItem to="/campaigns">Campaigns</NavItem>
+		        <NavItem to="/members">Members</NavItem>
 		      </ul>
 		      <ul className="nav navbar-nav navbar-right">
 		        <li className="dropdown">
