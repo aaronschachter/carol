@@ -66,7 +66,7 @@ var CampaignsTable = React.createClass({
       );
     });
     return (
-      <div>
+      <div className="list-group">
         {campaigns}
       </div>
     );
@@ -80,15 +80,13 @@ var CampaignsListItem = React.createClass({
     localStorage['campaign_' + campaignId + '_tagline'] = this.props.campaign.tagline;
     var url = '/campaigns/' + campaignId;
     return (
-      <div>
-          <h3>
-            <NavLink to={url}>{this.props.campaign.title}</NavLink>
-          </h3>
-          <p className="pull-right">
-            <small>{this.props.campaign.status.toUpperCase()}</small>
-          </p>
-          <p>{this.props.campaign.tagline}</p>
-      </div>
+      <NavLink className="list-group-item" to={url}>
+        <h3>{this.props.campaign.title}</h3>
+        <p className="pull-right">
+          <small>{this.props.campaign.status.toUpperCase()}</small>
+        </p>
+        <p>{this.props.campaign.tagline}</p>
+      </NavLink>
     );
   }
 });
