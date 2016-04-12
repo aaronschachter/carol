@@ -27,18 +27,28 @@ export default React.createClass({
     }
     // Otherwise return list of Campaigns.
     return (
-      <div className="row">
-        <div className="col-md-3">
-          <ul id="leftNav" className="nav nav-pills nav-stacked">
-            <li className="active" role="presentation"><a>All</a></li>
-            <li role="presentation"><a>Animals</a></li>
-            <li role="presentation"><a>Bullying</a></li>
-            <li role="presentation"><a>Disasters</a></li>
-            <li role="presentation"><a>Discrimination</a></li>
-          </ul>
+      <div className="container">
+        <div className="page-header">
+          <div className="input-group">
+            <input type="text" className="form-control" placeholder="Search for..." />
+            <span className="input-group-btn">
+              <button className="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
         </div>
-        <div className="col-md-9">
-          <CampaignsTable data={this.state.data} />
+        <div className="row">
+          <div className="col-md-3">
+            <ul id="leftNav" className="nav nav-pills nav-stacked">
+              <li className="active" role="presentation"><a>All</a></li>
+              <li role="presentation"><a>Animals</a></li>
+              <li role="presentation"><a>Bullying</a></li>
+              <li role="presentation"><a>Disasters</a></li>
+              <li role="presentation"><a>Discrimination</a></li>
+            </ul>
+          </div>
+          <div className="col-md-9">
+            <CampaignsTable data={this.state.data} />
+          </div>
         </div>
       </div>
     );
@@ -70,18 +80,14 @@ var CampaignsListItem = React.createClass({
     localStorage['campaign_' + campaignId + '_tagline'] = this.props.campaign.tagline;
     var url = '/campaigns/' + campaignId;
     return (
-      <div className="panel panel-default">
-        <div className="panel-body">
-          <h2>
-            <NavLink to={url}>
-              {this.props.campaign.title}
-            </NavLink>
-          </h2>
+      <div>
+          <h3>
+            <NavLink to={url}>{this.props.campaign.title}</NavLink>
+          </h3>
+          <p className="pull-right">
+            <small>{this.props.campaign.status.toUpperCase()}</small>
+          </p>
           <p>{this.props.campaign.tagline}</p>
-        </div>
-        <div className="panel-footer">
-          <p className="text-right">{this.props.campaign.status.toUpperCase()}</p>
-        </div>
       </div>
     );
   }
