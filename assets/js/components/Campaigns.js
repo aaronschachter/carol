@@ -1,7 +1,6 @@
 import React from 'react'
 import NavLink from './NavLink'
-import activeComponent from 'react-router-active-component';
-let NavItem = activeComponent('h2');
+import SearchForm from './SearchForm'
 
 export default React.createClass({
   fetchData: function() {
@@ -29,12 +28,7 @@ export default React.createClass({
     return (
       <div className="container">
         <div className="page-header">
-          <div className="input-group">
-            <input type="text" className="form-control" placeholder="Search for..." />
-            <span className="input-group-btn">
-              <button className="btn btn-default" type="button">Go!</button>
-            </span>
-          </div>
+          <SearchForm />
         </div>
         <div className="row">
           <div className="col-md-3">

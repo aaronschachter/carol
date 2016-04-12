@@ -8,3 +8,10 @@ body {
 .gallery .caption {
   height: 40px;
 }
+.avatar {
+  padding: 20px 0;
+}
+.avatar img{
+  width:200px;
+  height:200px;
+}

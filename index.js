@@ -6,6 +6,7 @@ import App from './assets/js/components/App';
 import Campaign from './assets/js/components/Campaign';
 import Campaigns from './assets/js/components/Campaigns';
 import Members from './assets/js/components/Members';
+import Profile from './assets/js/components/Profile';
 
 render((
   <Router history={browserHistory}>
@@ -13,7 +14,9 @@ render((
       <Route path="/campaigns" component={Campaigns}>
         <Route path="/campaigns/:campaignId" component={Campaign}/>
       </Route>
-      <Route path="/members" component={Members}/>
+      <Route path="/members" component={Members}>
+        <Route path="/members/:userId" component={Profile} />
+      </Route>
     </Route>
   </Router>
 ), document.getElementById('app'));
