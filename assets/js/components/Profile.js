@@ -41,11 +41,15 @@ export default React.createClass({
     else {
       content = this.state.data.map(function(signup) {
         if (signup.reportback) {
-          return <Reportback
-            campaign={signup.campaign}
-            key={signup.id} 
-            reportback={signup.reportback} 
-          />;
+          return (
+            <div className="col-md-8 col-md-offset-2">
+              <Reportback
+                campaign={signup.campaign}
+                key={signup.id} 
+                reportback={signup.reportback} 
+              />
+            </div>
+          );
         }
         return null;
       });      
@@ -53,11 +57,23 @@ export default React.createClass({
     return (
       <div>
         <div className="page-header">
-          <img src={photo} className="img-circle avatar pull-left" />
-          <h1>{firstName}</h1>
-          <h4>{'united states'.toUpperCase()}</h4>
+          <ul className="list-group pull-right">
+            <button type="button" className="list-group-item"><a href="#">Email {firstName}</a></button>
+            <button type="button" className="list-group-item"><a href="#"><small>Flag as inappropriate</small></a></button>
+          </ul>
+          <div className="media">
+            <div className="media-left media-middle">
+              <a href={photo} target="_blank">
+                <img className="media-object img-circle avatar" src={photo} />
+              </a>
+            </div>
+            <div className="media-body">
+              <h1>{firstName}</h1>
+              <small>{'united states'.toUpperCase()}</small>
+            </div>
+          </div>
         </div>
-        <div>
+        <div className="row">
           {content}
         </div>
       </div>
