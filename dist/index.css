@@ -9,9 +9,20 @@ body {
   height: 40px;
 }
 .avatar {
-  padding: 20px 0;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
 }
-.avatar img{
-  width:200px;
-  height:200px;
+.carousel-caption {
+  position: relative;
+  left: auto;
+  right: auto;
+  color: #333;
+  text-shadow: none;
+  margin:20px 0 0 0;
+  background: white;
+}
+.carousel-control.left, .carousel-control.right {
+  background-image: none;
+  color: #ccc;
 }
