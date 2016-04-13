@@ -54,6 +54,7 @@ export default React.createClass({
         return null;
       });      
     }
+    var joined = Math.floor(Math.random() * 5);
     return (
       <div>
         <div className="page-header">
@@ -70,6 +71,7 @@ export default React.createClass({
             <div className="media-body">
               <h1>{firstName}</h1>
               <small>{'united states'.toUpperCase()}</small>
+              <p>Joined {joined+1} yrs ago</p>
             </div>
           </div>
         </div>

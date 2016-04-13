@@ -5,7 +5,7 @@ export default React.createClass({
   render: function() {
     // @todo: Move this into a storage.users.add function
     var user = this.props.reportbackItem.user;
-    if (user.photo) {
+    if (user.first_name) {
       localStorage['user_' + user.id + '_first_name'] = user.first_name;
     }
     if (user.photo) {
