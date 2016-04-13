@@ -12,6 +12,9 @@ a:hover {
   width: 80px;
   height: 80px;
 }
+.carousel {
+  background: #333;
+}
 .carousel-caption {
   position: relative;
   left: auto;
@@ -24,4 +27,7 @@ a:hover {
 .carousel-control.left, .carousel-control.right {
   background-image: none;
   color: #ccc;
+}
+.verified-icon {
+  color: green;
 }

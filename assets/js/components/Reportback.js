@@ -2,14 +2,25 @@ import React from 'react'
 import NavLink from './NavLink'
 
 export default React.createClass({
+  randomDateString() {
+    var days = Math.floor(Math.random() * (234 - 3 + 1)) + 3;
+    var date = new Date();
+    date.setDate(date.getDate() - days);
+    return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+  },
   render() {
     var campaignUrl = '/campaigns/' + this.props.campaign.id;
     var label = this.props.campaign.reportback_info.noun + ' ' + this.props.campaign.reportback_info.verb;
     var reportbackItem = this.props.reportback.reportback_items.data[0];
+    var date = this.randomDateString();
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
-          <h4 className="pull-right">{this.props.reportback.quantity} <small>{label}</small></h4>
+          <div className="pull-right text-right">
+            <h4>{this.props.reportback.quantity} <small>{label}</small></h4>
+            <span className="glyphicon glyphicon-ok verified-icon" aria-hidden="true"></span>
+            <small> Reviewed {date}</small>
+          </div>
           <h4><NavLink to={campaignUrl}>{this.props.campaign.title}</NavLink></h4>
           <small>{this.props.campaign.tagline}</small>
         </div>
