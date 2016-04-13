@@ -2,44 +2,156 @@ import React from 'react'
 import NavLink from './NavLink'
 
 export default React.createClass({
-  randomDateString() {
-    var days = Math.floor(Math.random() * (234 - 3 + 1)) + 3;
-    var date = new Date();
-    date.setDate(date.getDate() - days);
-    return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+  bumpIndex: function(increment) {
+    var newIndex = this.state.selectedItemIndex + increment;
+    var totalItems = this.state.reportback.reportback_items.data.length;
+    if (newIndex == totalItems) {
+      newIndex = 0;
+    }
+    else if (newIndex < 0) {
+      newIndex = totalItems - 1;
+    }
+    this.setState({
+      selectedItemIndex: newIndex,
+    });
+  },
+  getInitialState: function() {
+    // @todo Pass itemIndex isntead of hardcoding first item.
+    return {
+      reportback: this.props.reportback,
+      selectedItemIndex: 0,
+      status: 'Inbox'
+    };
+  },
+  postReview: function(status) {
+    if (status == 'Approved' || status == 'Promoted' || status == 'Excluded') {
+      status = 'Reviewed';
+    }
+    this.setState({
+      status: status,
+    });
   },
   render() {
     var campaignUrl = '/campaigns/' + this.props.campaign.id;
     var label = this.props.campaign.reportback_info.noun + ' ' + this.props.campaign.reportback_info.verb;
-    var reportbackItem = this.props.reportback.reportback_items.data[0];
-    var date = this.randomDateString();
+    var reportbackItem = this.state.reportback.reportback_items.data[this.state.selectedItemIndex];
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
           <div className="pull-right text-right">
-            <h4>{this.props.reportback.quantity} <small>{label}</small></h4>
-            <span className="glyphicon glyphicon-ok verified-icon" aria-hidden="true"></span>
-            <small> Reviewed {date}</small>
+            <h4>{this.state.reportback.quantity} <small>{label}</small></h4>
+            <ReportbackStatus status={this.state.status} />
           </div>
           <h4><NavLink to={campaignUrl}>{this.props.campaign.title}</NavLink></h4>
           <small>{this.props.campaign.tagline}</small>
         </div>
-        <div className="panel-body">
+        <div className="panel-body row">
+          <div className="col-md-8">
           <Carousel
-            key={this.props.reportback.id}
-            data={this.props.reportback.reportback_items.data}
-            reportback={this.props.reportback}
+            key={this.state.reportback.id}
+            bumpIndex={this.bumpIndex}
+            data={this.state.reportback.reportback_items.data}
+            reportback={this.state.reportback}
             reportbackItem={reportbackItem}
           />
+          </div>
+          <div className="col-md-4">
+            <h3>{reportbackItem.caption}</h3>
+            <ReportbackItemForm 
+              key={reportbackItem.id}
+              postReview={this.postReview}
+              reportbackItem={reportbackItem}
+            />
+          </div>
         </div>
       </div>
     );
+  },
+});
+
+var ReportbackStatus = React.createClass({
+  className: function() {
+    var className = 'glyphicon-inbox';
+    if (this.props.status == 'Reviewed') {
+      className = 'glyphicon-ok';
+    }
+    else if (this.props.status == 'Flagged') {
+      className = 'glyphicon glyphicon-trash';
+    }
+    return className;
+  },
+  render: function() {
+    var className = 'glyphicon ' + this.className();
+    return (
+      <div>
+        <span className={className} aria-hidden="true"></span>
+        <small> {this.props.status}</small>
+      </div>
+    );   
+  }
+});
+
+var ReportbackItemForm = React.createClass({
+  getInitialState: function() {
+    return {
+      action: null,
+      enabled: true,
+      submitted: null,
+    };
+  },
+  flag: function() {
+    this.props.postReview('Flagged');
+    this.setState({
+      action: 'Flagged',
+      enabled: false,
+      submitted: new Date(),
+    });
+  },
+  review: function(status) {
+    this.props.postReview(status);
+    this.setState({
+      action: status,
+      enabled: false,
+      submitted: new Date(),
+    });
+  },
+  render: function() {
+    if (!this.state.enabled) {
+      return (
+        <table className="table">
+          <tr><td>
+            {this.state.action} by Carol
+          </td></tr>
+        </table>
+      );
+    }
+    return (
+      <div>
+        <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">Approve</button>
+        <button onClick={this.review.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">Promote</button>
+        <button onClick={this.review.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">Exclude</button>
+        <button onClick={this.flag} className="btn btn-default btn-lg btn-block" type="submit">Flag</button>
+      </div>
+    );
+  },
+});
+
+var ControlButton = React.createClass({
+  render: function() {
+    return (
+      <button 
+        onClick={this.onClickHandler} 
+        className="btn btn-default btn-lg btn-block"
+        type="submit">
+        {this.props.label}
+      </button>);
   }
 });
 
 var Carousel = React.createClass({
   handleClick: function(increment) {
-//    this.props.bumpIndex(increment);
+    this.props.bumpIndex(increment);
   },
   render: function() {
     var items = this.props.data.map(function(reportbackItem, itemIndex) {
@@ -93,9 +205,6 @@ var CarouselItem = React.createClass({
           src={this.props.reportbackItem.media.uri}
           className="center-block"
         />
-        <div className="carousel-caption">
-          {this.props.reportbackItem.caption}
-        </div>
       </div>
     );
   }

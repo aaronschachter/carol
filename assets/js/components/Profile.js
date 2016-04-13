@@ -42,13 +42,11 @@ export default React.createClass({
       content = this.state.data.map(function(signup) {
         if (signup.reportback) {
           return (
-            <div className="col-md-8 col-md-offset-2">
-              <Reportback
-                campaign={signup.campaign}
-                key={signup.id} 
-                reportback={signup.reportback} 
-              />
-            </div>
+            <Reportback
+              campaign={signup.campaign}
+              key={signup.id} 
+              reportback={signup.reportback} 
+            />
           );
         }
         return null;

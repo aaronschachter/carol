@@ -28,6 +28,9 @@ a:hover {
   background-image: none;
   color: #ccc;
 }
-.verified-icon {
+.glyphicon-ok {
   color: green;
+}
+.glyphicon-trash {
+  color: red;
 }
