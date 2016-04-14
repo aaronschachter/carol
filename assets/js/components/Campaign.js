@@ -11,18 +11,17 @@ export default React.createClass({
     var url = 'https://www.dosomething.org/api/v1/reportback-items.json?campaigns=' + campaignId + '&load_user=true';
     fetch(url)
       .then((res) => {
-        this.state.inboxLoaded = true;
         return res.json();
       })
       .then((json) => {
+        // @todo - shouldnt set campaign this way in case of no results
         if (json.data.length > 0) {
           this.state.campaign = json.data[0].campaign;
         }
         this.setState({
           gallery: json.data,
-          galleryLoaded: this.state.inboxLoaded,
+          galleryLoaded: true,
           campaign: this.state.campaign,
-          reportbackItems: json.data,
         });
       })
   },

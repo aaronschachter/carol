@@ -72,17 +72,17 @@ export default React.createClass({
 
 var ReportbackStatus = React.createClass({
   className: function() {
-    var className = 'glyphicon-inbox';
+    var className = 'inbox';
     if (this.props.status == 'Reviewed') {
-      className = 'glyphicon-ok';
+      className = 'ok';
     }
     else if (this.props.status == 'Flagged') {
-      className = 'glyphicon glyphicon-trash';
+      className = 'trash';
     }
     return className;
   },
   render: function() {
-    var className = 'glyphicon ' + this.className();
+    var className = 'glyphicon glyphicon-' + this.className();
     return (
       <div>
         <span className={className} aria-hidden="true"></span>
