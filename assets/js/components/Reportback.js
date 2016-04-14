@@ -38,14 +38,6 @@ export default React.createClass({
 
     return (
       <div className="panel panel-default">
-        <div className="panel-heading">
-          <div className="pull-right text-right">
-            <h4>{this.state.reportback.quantity} <small>{label}</small></h4>
-            <ReportbackStatus status={this.state.status} />
-          </div>
-          <h4><NavLink to={campaignUrl}>{this.props.campaign.title}</NavLink></h4>
-          <small>{this.props.campaign.tagline}</small>
-        </div>
         <div className="panel-body row">
           <div className="col-md-8">
           <Carousel
@@ -57,7 +49,11 @@ export default React.createClass({
           />
           </div>
           <div className="col-md-4">
-            <h3>{reportbackItem.caption}</h3>
+          <div className="well text-center">
+              <h4>{this.state.reportback.quantity} <small>{label}</small></h4>
+              <ReportbackStatus status={this.state.status} />
+            </div>
+            <h5>{reportbackItem.caption}</h5>
             <ReportbackItemForm 
               key={reportbackItem.id}
               postReview={this.postReview}
