@@ -56,10 +56,6 @@ export default React.createClass({
     return (
       <div>
         <div className="page-header">
-          <ul className="list-group pull-right">
-            <button type="button" className="list-group-item"><a href="#">Email {firstName}</a></button>
-            <button type="button" className="list-group-item"><a href="#"><small>Flag as inappropriate</small></a></button>
-          </ul>
           <div className="media">
             <div className="media-left media-middle">
               <a href={photo} target="_blank">
@@ -67,6 +63,10 @@ export default React.createClass({
               </a>
             </div>
             <div className="media-body">
+              <div className="btn-group pull-right" role="group" aria-label="...">
+                <button type="button" className="btn btn-default">Messages</button>
+                <button type="button" className="btn btn-default">Flag Profile</button>
+              </div>
               <h1>{firstName}</h1>
               <small>{'united states'.toUpperCase()}</small>
               <p>Joined {joined+1} yrs ago</p>

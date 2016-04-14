@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router'
+
 import ReportbackItem from './ReportbackItem'
 
 export default React.createClass({
@@ -33,6 +35,7 @@ export default React.createClass({
   },
   render() {
   	var campaignId = this.props.params.campaignId;
+    var inboxUrl = '/campaigns/' + campaignId + '/inbox';
     var title = localStorage['campaign_' + campaignId + '_title'];
     var tagline = localStorage['campaign_' + campaignId + '_tagline'];
     var reportbackItems = this.state.gallery.map(function(reportbackItem) {
@@ -48,6 +51,7 @@ export default React.createClass({
     return (
       <div className="container">
 	      <div className="page-header">
+          <Link className="btn btn-primary pull-right" to={inboxUrl} role="button">Inbox</Link>
 	        <h1>{title}</h1>
 	        <p>{tagline}</p>
 	      </div>
