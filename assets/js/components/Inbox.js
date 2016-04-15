@@ -1,4 +1,5 @@
 import React from 'react'
+import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import NavLink from './NavLink'
 import Reportback from './Reportback';
@@ -49,11 +50,18 @@ export default React.createClass({
     else {
       reportback = this.state.inbox[this.state.selectedIndex];
       content = (
-        <Reportback
-          campaign={reportback.campaign}
-          key={reportback.id} 
-          reportback={reportback} 
-        />
+        <CSSTransitionGroup
+          component="div"
+          transitionName="entry"
+          transitionLeaveTimeout={1000}
+          transitionEnterTimeout={1000}
+        >
+          <Reportback
+            campaign={reportback.campaign}
+            key={reportback.id} 
+            reportback={reportback} 
+          />
+        </CSSTransitionGroup>
       );
     }
     return (

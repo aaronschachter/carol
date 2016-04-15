@@ -71,16 +71,19 @@ export default React.createClass({
   },
 });
 
-var ReportbackStatus = React.createClass({
+var ReportbackStatusIcon = React.createClass({
   className: function() {
-    var className = 'inbox';
-    if (this.props.status == 'Reviewed') {
-      className = 'ok';
-    }
-    else if (this.props.status == 'Flagged') {
-      className = 'trash';
-    }
-    return className;
+    switch(this.props.status) {
+      case 'approved':
+        return 'ok';
+      case 'promoted':
+        return 'heart';
+      case 'excluded':
+        return 'remove';
+      case 'flagged':
+        return 'trash';
+      }
+    return null;
   },
   render: function() {
     var className = 'glyphicon glyphicon-' + this.className();
@@ -103,22 +106,27 @@ var ReportbackItemForm = React.createClass({
   },
   onKeyDown: function(e) {
     var status = null;
+    console.log(e.keyCode);
     switch(e.keyCode) {
       // f
       case 70:
-        status = 'Flagged';
+        status = 'flagged';
         break;
        // n
       case 78:
-        status = 'Excluded';
+        status = 'excluded';
         break;
        // o
       case 79:
-        status = 'Promoted';
+        status = 'promoted';
+        break;
+       // x
+      case 88:
+        status = 'excluded';
         break;
        // y
       case 89:
-        status = 'Approved';
+        status = 'approved';
         break;
     }
     if (status) {
@@ -130,7 +138,7 @@ var ReportbackItemForm = React.createClass({
     this.setState({
       action: status,
       enabled: false,
-      submitted: new Date(),
+      submitted: Date.now(),
     });
   },
   render: function() {
@@ -138,7 +146,7 @@ var ReportbackItemForm = React.createClass({
       return (
         <table className="table">
           <tr><td>
-            <small>{this.state.action} by Carol</small>
+            <small><ReportbackStatusIcon status={this.state.action} /> <strong>{this.state.action}</strong> by Carol {Helpers.formatTimestamp(this.state.submitted / 1000)}</small>
           </td></tr>
         </table>
       );
@@ -146,18 +154,18 @@ var ReportbackItemForm = React.createClass({
     return (
       <div className="well">
         <small>publish?</small>
-        <button onClick={this.postReview.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">
-          <span className="glyphicon glyphicon-ok"></span> yes
+        <button onClick={this.postReview.bind(this, 'approved')} className="btn btn-default btn-lg btn-block" type="submit">
+          <ReportbackStatusIcon status='approved' /> yes
         </button>
-        <button onClick={this.postReview.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">
-          <span className="glyphicon glyphicon-heart"></span> omg
+        <button onClick={this.postReview.bind(this, 'promoted')} className="btn btn-default btn-lg btn-block" type="submit">
+          <ReportbackStatusIcon status='promoted' /> omg
         </button>
-        <button onClick={this.postReview.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">
-          <span className="glyphicon glyphicon-remove"></span> no
+        <button onClick={this.postReview.bind(this, 'excluded')} className="btn btn-default btn-lg btn-block" type="submit">
+          <ReportbackStatusIcon status='excluded' /> no
         </button>
         <hr />
-        <button onClick={this.postReview.bind(this, 'Flagged')} className="btn btn-default btn-block" type="submit">
-          <ReportbackStatus status='Flagged' /> flag
+        <button onClick={this.postReview.bind(this, 'flagged')} className="btn btn-default btn-block" type="submit">
+          <ReportbackStatusIcon status='flagged' /> flag
         </button>
       </div>
     );
