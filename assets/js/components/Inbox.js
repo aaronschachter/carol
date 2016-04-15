@@ -66,6 +66,7 @@ export default React.createClass({
 var Controls = React.createClass({
   render: function() {
     var profileUrl = '#';
+    var baseUrl = '#';
     var firstName = 'Doer';
     var photo = 'https://raw.githubusercontent.com/DoSomething/LetsDoThis-iOS/develop/Lets%20Do%20This/Images.xcassets/Avatar.imageset/Avatar.png';
     if (this.props.reportback) {
@@ -75,20 +76,31 @@ var Controls = React.createClass({
       }
       if (this.props.reportback.user.photo) {
         photo = this.props.reportback.user.photo;
-      }        
+      }
+      if (this.props.reportback.campaign) {
+        baseUrl = '/campaigns/' + this.props.reportback.campaign.id + '/inbox?reportback='; 
+      }    
     }
-  
+    
     return (
       <nav>
         <ul className="pager inbox-pager">
-          <li className="previous"><a href="#"><span className="glyphicon glyphicon-chevron-left" /></a></li>
+          <li className="previous">
+            <NavLink to={baseUrl+'123'}>
+              <span className="glyphicon glyphicon-chevron-left" />
+            </NavLink>
+          </li>
           <li>
             <NavLink to={profileUrl}>
               <img className="media-object img-circle avatar" src={photo} />
               <small>{firstName.toUpperCase()}</small>
             </NavLink>
           </li>
-          <li className="next"><a href="#"><span className="glyphicon glyphicon-chevron-right" /></a></li>
+          <li className="next">
+            <NavLink to={baseUrl+'456'}>
+              <span className="glyphicon glyphicon-chevron-right" />
+            </NavLink>
+          </li>
         </ul>
       </nav>
     );
