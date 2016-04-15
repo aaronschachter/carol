@@ -4,6 +4,12 @@ import NavLink from './NavLink'
 import Reportback from './Reportback';
 
 export default React.createClass({
+  bumpIndex: function(increment) {
+    var newIndex = this.state.selectedIndex + increment;
+    this.setState({
+      selectedIndex: newIndex,
+    });
+  },
   componentDidMount: function() {
     this.fetchData(this.props.params.campaignId);
   },
@@ -15,16 +21,16 @@ export default React.createClass({
       })
       .then((json) => {
         this.setState({
-          data: json.data,
-          reportback: json.data[0],
+          inbox: json.data,
           loaded: true,
         });
       })
   },
   getInitialState: function() {
     return {
+      inbox: [],
       loaded: false,
-      reportback: null,
+      selectedIndex: 0,
     };
   },
   render() {
@@ -33,18 +39,23 @@ export default React.createClass({
     var campaignUrl = '/campaigns/' + campaignId;
     var title = localStorage['campaign_' + campaignId + '_title'];
     var tagline = localStorage['campaign_' + campaignId + '_tagline'];
-    var content;
+    var content, reportback;
     if (!this.state.loaded) {
       content = <div>Loading</div>;
     }
     else {
+      reportback = this.state.inbox[this.state.selectedIndex];
       content = (
         <Reportback
-          campaign={this.state.reportback.campaign}
-          key={this.state.reportback.id} 
-          reportback={this.state.reportback} 
+          campaign={reportback.campaign}
+          key={reportback.id} 
+          reportback={reportback} 
         />
       );
+    }
+    var badge = null;
+    if (this.state.inbox.length) {
+      badge = <span className="badge pull-right">{this.state.inbox.length}</span>;
     }
     return (
       <div className="container">
@@ -52,9 +63,14 @@ export default React.createClass({
           <h1>
             <NavLink to={campaignUrl}>{title}</NavLink> <small><span className="glyphicon glyphicon-inbox"></span></small>
           </h1>
+          {badge}
           <p>{tagline}</p>
         </div>
-        <Controls reportback={this.state.reportback} />
+        <Controls 
+          bumpIndex={this.bumpIndex}
+          inboxIndex={this.state.selectedIndex}
+          reportback={reportback}
+        />
         <div className="row">
           <div className="col-md-12">{content}</div>
         </div>
@@ -64,31 +80,28 @@ export default React.createClass({
 });
 
 var Controls = React.createClass({
+  pagerClick: function(increment) {
+    var currentIndex = this.props.inboxIndex + increment;    
+    this.props.bumpIndex(increment);
+  },
   render: function() {
-    var profileUrl = '#';
-    var baseUrl = '#';
+    if (!this.props.reportback) {
+      return null;
+    }
     var firstName = 'Doer';
     var photo = 'https://raw.githubusercontent.com/DoSomething/LetsDoThis-iOS/develop/Lets%20Do%20This/Images.xcassets/Avatar.imageset/Avatar.png';
-    if (this.props.reportback) {
-      profileUrl = '/members/' + this.props.reportback.user.id;
-      if (this.props.reportback.user.first_name) {
-        firstName = this.props.reportback.user.first_name;
-      }
-      if (this.props.reportback.user.photo) {
-        photo = this.props.reportback.user.photo;
-      }
-      if (this.props.reportback.campaign) {
-        baseUrl = '/campaigns/' + this.props.reportback.campaign.id + '/inbox?reportback='; 
-      }    
+    var profileUrl = '/members/' + this.props.reportback.user.id;
+    if (this.props.reportback.user.first_name) {
+      firstName = this.props.reportback.user.first_name;
     }
-    
+    if (this.props.reportback.user.photo) {
+      photo = this.props.reportback.user.photo;
+    }   
     return (
       <nav>
         <ul className="pager inbox-pager">
           <li className="previous">
-            <NavLink to={baseUrl+'123'}>
-              <span className="glyphicon glyphicon-chevron-left" />
-            </NavLink>
+            <span onClick={this.pagerClick.bind(this, -1)} className="glyphicon glyphicon-chevron-left" />
           </li>
           <li>
             <NavLink to={profileUrl}>
@@ -97,9 +110,7 @@ var Controls = React.createClass({
             </NavLink>
           </li>
           <li className="next">
-            <NavLink to={baseUrl+'456'}>
-              <span className="glyphicon glyphicon-chevron-right" />
-            </NavLink>
+            <span onClick={this.pagerClick.bind(this, 1)} className="glyphicon glyphicon-chevron-right" />
           </li>
         </ul>
       </nav>
