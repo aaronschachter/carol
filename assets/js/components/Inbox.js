@@ -79,8 +79,21 @@ export default React.createClass({
 });
 
 var Controls = React.createClass({
+  onKeyDown: function(e) {
+    if (e.keyCode == 37) {
+      this.pagerClick(-1);
+    }
+    else if (e.keyCode == 39) {
+      this.pagerClick(1);
+    }
+  },
+  componentDidMount: function() {
+    window.addEventListener('keydown', this.onKeyDown);
+  },
   pagerClick: function(increment) {
-    var currentIndex = this.props.inboxIndex + increment;    
+    if (this.props.inboxIndex == 0 && increment < 0) {
+      return;
+    } 
     this.props.bumpIndex(increment);
   },
   render: function() {

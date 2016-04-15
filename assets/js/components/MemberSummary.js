@@ -13,17 +13,17 @@ export default React.createClass({
       photo = this.props.user.photo;
     }
     return (
-      <div className="media">
-        <div className="media-left">
-          <NavLink to={profileUrl}>
+      <NavLink to={profileUrl}>
+        <div className="media">
+          <div className="media-left">
             <img className="media-object img-circle avatar" src={photo} />
-          </NavLink>
+          </div>
+          <div className="media-body media-middle">
+            <h4 className="media-heading">{firstName.toUpperCase()}</h4>
+            <small>UNITED STATES</small>
+          </div>
         </div>
-        <div className="media-body media-middle">
-          <h4 className="media-heading">{firstName.toUpperCase()}</h4>
-          <small>UNITED STATES</small>
-        </div>
-      </div>
+      </NavLink>
     );
   }
 });
