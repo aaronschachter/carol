@@ -43,6 +43,9 @@ export default React.createClass({
     if (!this.state.loaded) {
       content = <div>Loading</div>;
     }
+    else if (this.state.inbox.length < 1) {
+      content = <div>Inbox zero. Sweet!</div>
+    }
     else {
       reportback = this.state.inbox[this.state.selectedIndex];
       content = (
@@ -53,22 +56,18 @@ export default React.createClass({
         />
       );
     }
-    var badge = null;
-    if (this.state.inbox.length) {
-      badge = <span className="badge pull-right">{this.state.inbox.length}</span>;
-    }
     return (
       <div className="container">
         <div className="page-header">
           <h1>
-            <NavLink to={campaignUrl}>{title}</NavLink> <small><span className="glyphicon glyphicon-inbox"></span></small>
+            <NavLink to={campaignUrl}>{title}</NavLink>
           </h1>
-          {badge}
           <p>{tagline}</p>
         </div>
         <Controls 
           bumpIndex={this.bumpIndex}
           inboxIndex={this.state.selectedIndex}
+          inboxLength={this.state.inbox.length}
           reportback={reportback}
         />
         <div className="row">
@@ -96,7 +95,7 @@ var Controls = React.createClass({
     }
     if (this.props.reportback.user.photo) {
       photo = this.props.reportback.user.photo;
-    }   
+    }
     return (
       <nav>
         <ul className="pager inbox-pager">
@@ -104,10 +103,7 @@ var Controls = React.createClass({
             <span onClick={this.pagerClick.bind(this, -1)} className="glyphicon glyphicon-chevron-left" />
           </li>
           <li>
-            <NavLink to={profileUrl}>
-              <img className="media-object img-circle avatar" src={photo} />
-              <small>{firstName.toUpperCase()}</small>
-            </NavLink>
+            <small><span className="glyphicon glyphicon-inbox"></span> {this.props.inboxIndex + 1} / {this.props.inboxLength} </small>
           </li>
           <li className="next">
             <span onClick={this.pagerClick.bind(this, 1)} className="glyphicon glyphicon-chevron-right" />
@@ -117,4 +113,3 @@ var Controls = React.createClass({
     );
   },
 });
-

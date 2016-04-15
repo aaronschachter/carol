@@ -1,4 +1,6 @@
 import React from 'react'
+
+import MemberSummary from './MemberSummary'
 import NavLink from './NavLink'
 
 export default React.createClass({
@@ -49,8 +51,13 @@ export default React.createClass({
           />
           </div>
           <div className="col-md-4">
+            <MemberSummary user={this.state.reportback.user} />
             <h3>{this.state.reportback.quantity} <small>{label}</small></h3>
-            <small>{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length} photos</small>   
+            <ul className="list-group">
+              <li className="list-group-item">
+                <small>{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length} photos</small>
+              </li>
+            </ul>
             <ReportbackItemForm 
               key={reportbackItem.id}
               postReview={this.postReview}
@@ -117,7 +124,7 @@ var ReportbackItemForm = React.createClass({
       );
     }
     return (
-      <div className="jumbotron">
+      <div className="well">
         <small>publish?</small>
         <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">
           <span className="glyphicon glyphicon-ok"></span> yes
@@ -168,14 +175,14 @@ var Carousel = React.createClass({
   renderControls: function(href) {
     return (
       <div>
-      <a onClick={this.handleClick.bind(this, -1)} className="left carousel-control" href={href}  role="button" data-slide="prev">
-        <span className="glyphicon glyphicon-chevron-left carousel-button" aria-hidden="true"></span>
-        <span className="sr-only">Previous</span>
-      </a>
-      <a onClick={this.handleClick.bind(this, 1)} className="right carousel-control" href={href}  role="button" data-slide="next">
-        <span className="glyphicon glyphicon-chevron-right carousel-button" aria-hidden="true"></span>
-        <span className="sr-only">Next</span>
-      </a>
+        <a onClick={this.handleClick.bind(this, -1)} className="left carousel-control" href={href}  role="button" data-slide="prev">
+          <span className="glyphicon glyphicon-chevron-left carousel-button" aria-hidden="true"></span>
+          <span className="sr-only">Previous</span>
+        </a>
+        <a onClick={this.handleClick.bind(this, 1)} className="right carousel-control" href={href}  role="button" data-slide="next">
+          <span className="glyphicon glyphicon-chevron-right carousel-button" aria-hidden="true"></span>
+          <span className="sr-only">Next</span>
+        </a>
       </div>
     );
   }
