@@ -91,6 +91,9 @@ var ReportbackStatus = React.createClass({
 });
 
 var ReportbackItemForm = React.createClass({
+  componentDidMount: function() {
+    window.addEventListener('keydown', this.onKeyDown);
+  },
   getInitialState: function() {
     return {
       action: null,
@@ -98,15 +101,31 @@ var ReportbackItemForm = React.createClass({
       submitted: null,
     };
   },
-  flag: function() {
-    this.props.postReview('Flagged');
-    this.setState({
-      action: 'Flagged',
-      enabled: false,
-      submitted: new Date(),
-    });
+  onKeyDown: function(e) {
+    var status = null;
+    switch(e.keyCode) {
+      // f
+      case 70:
+        status = 'Flagged';
+        break;
+       // n
+      case 78:
+        status = 'Excluded';
+        break;
+       // o
+      case 79:
+        status = 'Promoted';
+        break;
+       // y
+      case 89:
+        status = 'Approved';
+        break;
+    }
+    if (status) {
+      this.postReview(status);
+    }
   },
-  review: function(status) {
+  postReview: function(status) {
     this.props.postReview(status);
     this.setState({
       action: status,
@@ -127,17 +146,17 @@ var ReportbackItemForm = React.createClass({
     return (
       <div className="well">
         <small>publish?</small>
-        <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">
+        <button onClick={this.postReview.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">
           <span className="glyphicon glyphicon-ok"></span> yes
         </button>
-        <button onClick={this.review.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">
+        <button onClick={this.postReview.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">
           <span className="glyphicon glyphicon-heart"></span> omg
         </button>
-        <button onClick={this.review.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">
+        <button onClick={this.postReview.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">
           <span className="glyphicon glyphicon-remove"></span> no
         </button>
         <hr />
-        <button onClick={this.flag} className="btn btn-default btn-block" type="submit">
+        <button onClick={this.postReview.bind(this, 'Flagged')} className="btn btn-default btn-block" type="submit">
           <ReportbackStatus status='Flagged' /> flag
         </button>
       </div>
