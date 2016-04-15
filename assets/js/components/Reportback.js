@@ -49,15 +49,13 @@ export default React.createClass({
           />
           </div>
           <div className="col-md-4">
-            <h3>{this.state.reportback.quantity} <small>{label} <ReportbackStatus status={this.state.status} /></small></h3>
-            <p>{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length} photos</p>
-            <div className="jumbotron">
-              <ReportbackItemForm 
-                key={reportbackItem.id}
-                postReview={this.postReview}
-                reportbackItem={reportbackItem}
-              />
-            </div>
+            <h3>{this.state.reportback.quantity} <small>{label}</small></h3>
+            <small>{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length} photos</small>   
+            <ReportbackItemForm 
+              key={reportbackItem.id}
+              postReview={this.postReview}
+              reportbackItem={reportbackItem}
+            />
           </div>
         </div>
       </div>
@@ -119,30 +117,24 @@ var ReportbackItemForm = React.createClass({
       );
     }
     return (
-      <div>
-        <small>Include in Gallery?</small>
-        <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">Ok</button>
-        <button onClick={this.review.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">Absolutely</button>
-        <button onClick={this.review.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">No</button>
+      <div className="jumbotron">
+        <small>publish?</small>
+        <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">
+          <span className="glyphicon glyphicon-ok"></span> yes
+        </button>
+        <button onClick={this.review.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">
+          <span className="glyphicon glyphicon-heart"></span> omg
+        </button>
+        <button onClick={this.review.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">
+          <span className="glyphicon glyphicon-remove"></span> no
+        </button>
         <hr />
         <button onClick={this.flag} className="btn btn-default btn-block" type="submit">
-          <ReportbackStatus status='Flagged' /> Flag
+          <ReportbackStatus status='Flagged' /> flag
         </button>
       </div>
     );
   },
-});
-
-var ControlButton = React.createClass({
-  render: function() {
-    return (
-      <button 
-        onClick={this.onClickHandler} 
-        className="btn btn-default btn-lg btn-block"
-        type="submit">
-        {this.props.label}
-      </button>);
-  }
 });
 
 var Carousel = React.createClass({

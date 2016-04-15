@@ -53,18 +53,45 @@ export default React.createClass({
             <NavLink to={campaignUrl}>{title}</NavLink> <small><span className="glyphicon glyphicon-inbox"></span></small>
           </h1>
           <p>{tagline}</p>
-          <div className="row">
-            <div className="col-md-12">
-              <a className="btn btn-default" href="#" role="button">Prev</a>
-              <a className="btn btn-default pull-right" href="#" role="button">Skip</a>
-            </div>
-          </div>
         </div>
-
+        <Controls reportback={this.state.reportback} />
         <div className="row">
-          <div className="col-md-10 col-md-offset-1">{content}</div>
+          <div className="col-md-12">{content}</div>
         </div>
       </div>
     );
   }
-})
+});
+
+var Controls = React.createClass({
+  render: function() {
+    var profileUrl = '#';
+    var firstName = 'Doer';
+    var photo = 'https://raw.githubusercontent.com/DoSomething/LetsDoThis-iOS/develop/Lets%20Do%20This/Images.xcassets/Avatar.imageset/Avatar.png';
+    if (this.props.reportback) {
+      profileUrl = '/members/' + this.props.reportback.user.id;
+      if (this.props.reportback.user.first_name) {
+        firstName = this.props.reportback.user.first_name;
+      }
+      if (this.props.reportback.user.photo) {
+        photo = this.props.reportback.user.photo;
+      }        
+    }
+  
+    return (
+      <nav>
+        <ul className="pager inbox-pager">
+          <li className="previous"><a href="#"><span className="glyphicon glyphicon-chevron-left" /></a></li>
+          <li>
+            <NavLink to={profileUrl}>
+              <img className="media-object img-circle avatar" src={photo} />
+              <small>{firstName.toUpperCase()}</small>
+            </NavLink>
+          </li>
+          <li className="next"><a href="#"><span className="glyphicon glyphicon-chevron-right" /></a></li>
+        </ul>
+      </nav>
+    );
+  },
+});
+

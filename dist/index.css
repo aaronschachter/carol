@@ -16,6 +16,7 @@ a:hover {
   background: #333;
 }
 .carousel-caption {
+  position: static;
   text-shadow: none;
   background-color: rgba(0, 0, 0, 0.5);
   font-size: 120%;
@@ -27,6 +28,13 @@ a:hover {
 .glyphicon-ok {
   color: green;
 }
+.glyphicon-heart {
+  color: #FF69B4;
+}
+.glyphicon-remove {
+  color: #ccc;
+}
 .glyphicon-trash {
   color: red;
 }
+
