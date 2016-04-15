@@ -2,6 +2,7 @@ import React from 'react'
 
 import MemberSummary from './MemberSummary'
 import NavLink from './NavLink'
+import Helpers from '../utils/Helpers.js'
 
 export default React.createClass({
   bumpIndex: function(increment) {
@@ -37,7 +38,7 @@ export default React.createClass({
     var campaignUrl = '/campaigns/' + this.props.campaign.id;
     var label = this.props.campaign.reportback_info.noun + ' ' + this.props.campaign.reportback_info.verb;
     var reportbackItem = this.state.reportback.reportback_items.data[this.state.selectedItemIndex];
-
+    var date = Helpers.formatTimestamp(reportbackItem.created_at);
     return (
       <div className="panel panel-default">
         <div className="panel-body row">
@@ -55,7 +56,7 @@ export default React.createClass({
             <h3>{this.state.reportback.quantity} <small>{label}</small></h3>
             <ul className="list-group">
               <li className="list-group-item">
-                <small>{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length} photos</small>
+                <small>{date} <span className="pull-right">{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length}</span></small>
               </li>
             </ul>
             <ReportbackItemForm 
