@@ -49,16 +49,15 @@ export default React.createClass({
           />
           </div>
           <div className="col-md-4">
-          <div className="well text-center">
-              <h4>{this.state.reportback.quantity} <small>{label}</small></h4>
-              <ReportbackStatus status={this.state.status} />
+            <h3>{this.state.reportback.quantity} <small>{label} <ReportbackStatus status={this.state.status} /></small></h3>
+            <p>{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length} photos</p>
+            <div className="jumbotron">
+              <ReportbackItemForm 
+                key={reportbackItem.id}
+                postReview={this.postReview}
+                reportbackItem={reportbackItem}
+              />
             </div>
-            <h5>{reportbackItem.caption}</h5>
-            <ReportbackItemForm 
-              key={reportbackItem.id}
-              postReview={this.postReview}
-              reportbackItem={reportbackItem}
-            />
           </div>
         </div>
       </div>
@@ -80,10 +79,7 @@ var ReportbackStatus = React.createClass({
   render: function() {
     var className = 'glyphicon glyphicon-' + this.className();
     return (
-      <div>
-        <span className={className} aria-hidden="true"></span>
-        <small> {this.props.status}</small>
-      </div>
+      <span className={className} aria-hidden="true"></span>  
     );   
   }
 });
@@ -117,17 +113,21 @@ var ReportbackItemForm = React.createClass({
       return (
         <table className="table">
           <tr><td>
-            {this.state.action} by Carol
+            <small>{this.state.action} by Carol</small>
           </td></tr>
         </table>
       );
     }
     return (
       <div>
-        <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">Approve</button>
-        <button onClick={this.review.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">Promote</button>
-        <button onClick={this.review.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">Exclude</button>
-        <button onClick={this.flag} className="btn btn-default btn-lg btn-block" type="submit">Flag</button>
+        <small>Include in Gallery?</small>
+        <button onClick={this.review.bind(this, 'Approved')} className="btn btn-default btn-lg btn-block" type="submit">Ok</button>
+        <button onClick={this.review.bind(this, 'Promoted')} className="btn btn-default btn-lg btn-block" type="submit">Absolutely</button>
+        <button onClick={this.review.bind(this, 'Excluded')} className="btn btn-default btn-lg btn-block" type="submit">No</button>
+        <hr />
+        <button onClick={this.flag} className="btn btn-default btn-block" type="submit">
+          <ReportbackStatus status='Flagged' /> Flag
+        </button>
       </div>
     );
   },
@@ -201,6 +201,9 @@ var CarouselItem = React.createClass({
           src={this.props.reportbackItem.media.uri}
           className="center-block"
         />
+        <div className="carousel-caption">
+          {this.props.reportbackItem.caption}
+        </div>
       </div>
     );
   }

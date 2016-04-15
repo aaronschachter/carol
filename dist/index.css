@@ -16,13 +16,9 @@ a:hover {
   background: #333;
 }
 .carousel-caption {
-  position: relative;
-  left: auto;
-  right: auto;
-  color: #333;
   text-shadow: none;
-  margin:20px 0 0 0;
-  background: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 120%;
 }
 .carousel-control.left, .carousel-control.right {
   background-image: none;
