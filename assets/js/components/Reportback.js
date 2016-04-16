@@ -113,27 +113,21 @@ var ReportbackItemForm = React.createClass({
   },
   onKeyDown: function(e) {
     var status = null;
-    switch(e.keyCode) {
-      // f
-      case 70:
-        status = 'flagged';
-        break;
-       // n
-      case 78:
-        status = 'excluded';
-        break;
-       // o
-      case 79:
-        status = 'promoted';
-        break;
-       // x
-      case 88:
-        status = 'excluded';
-        break;
-       // y
-      case 89:
-        status = 'approved';
-        break;
+    // f(flag)
+    if (e.keyCode == 70) {
+      status = 'flagged';
+    }
+    // e(exclude) || n(o) || x
+    else if (e.keyCode == 69 || e.keyCode == 78 || e.keyCode == 88) {
+      status = 'excluded';
+    }
+    // o(mg) || p(romoted)
+    else if (e.keyCode == 79 || e.keyCode == 80) {
+      status = 'promoted';
+    }
+    // a(approve) || y(es)
+    else if (e.keyCode == 65 || e.keyCode == 89) {
+      status = 'approved';
     }
     if (status) {
       this.postReview(status);
