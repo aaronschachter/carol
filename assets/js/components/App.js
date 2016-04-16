@@ -17,8 +17,8 @@ export default React.createClass({
     		        <span className="icon-bar"></span>
     		      </button>
     		      <a className="navbar-brand">
-                    <img src="/images/logo.png" height="20" width="20" />
-                    </a>
+                <img src="/images/logo.png" height="20" width="20" />
+              </a>
     		    </div>
     		    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     		      <ul className="nav navbar-nav">
@@ -38,7 +38,7 @@ export default React.createClass({
     		    </div>
     		  </div>
     		</nav>
-    		<div className="container">
+        <div className="container">
           {this.props.children}
         </div>
       </div>

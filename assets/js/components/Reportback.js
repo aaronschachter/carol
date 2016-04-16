@@ -27,7 +27,7 @@ export default React.createClass({
   postReview: function(status, timestamp) {
     // @todo Post to DS API
     if (this.props.postReview) {
-      this.props.postReview(status, timestamp);
+      this.props.postReview(status, timestamp, this.state.selectedItemIndex);
     }
   },
   render() {

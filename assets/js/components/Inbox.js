@@ -42,10 +42,11 @@ export default React.createClass({
     };
   },
   // @todo: Need to pass currentItemIndex as well
-  postReview: function(status, timestamp) {
+  postReview: function(reportbackItemStatus, timestamp, reportbackItemIndex) {
+    console.log(reportbackItemIndex);
     var selectedReportback = this.state.inbox[this.state.selectedIndex];
-    selectedReportback.reportback_items.data[0].status = status;
-    selectedReportback.reportback_items.data[0].reviewed_at = timestamp;
+    selectedReportback.reportback_items.data[reportbackItemIndex].status = reportbackItemStatus;
+    selectedReportback.reportback_items.data[reportbackItemIndex].reviewed_at = timestamp;
     this.state.inbox[this.state.selectedIndex] = selectedReportback;
   },
   render() {
