@@ -7,7 +7,7 @@ import Helpers from '../utils/Helpers.js'
 export default React.createClass({
   bumpIndex: function(increment) {
     var newIndex = this.state.selectedItemIndex + increment;
-    var totalItems = this.state.reportback.reportback_items.data.length;
+    var totalItems = this.props.reportback.reportback_items.data.length;
     if (newIndex == totalItems) {
       newIndex = 0;
     }
@@ -19,50 +19,46 @@ export default React.createClass({
     });
   },
   getInitialState: function() {
-    // @todo Pass itemIndex isntead of hardcoding first item.
+    // @todo Support passing itemIndex instead of always hardcoding first item.
     return {
-      reportback: this.props.reportback,
       selectedItemIndex: 0,
-      status: 'Inbox'
     };
   },
   postReview: function(status) {
-    if (status == 'Approved' || status == 'Promoted' || status == 'Excluded') {
-      status = 'Reviewed';
+    // @todo Post to DS API
+    if (this.props.postReview) {
+      this.props.postReview(status);
     }
-    this.setState({
-      status: status,
-    });
   },
   render() {
     var campaignUrl = '/campaigns/' + this.props.campaign.id;
     var label = this.props.campaign.reportback_info.noun + ' ' + this.props.campaign.reportback_info.verb;
-    var reportbackItem = this.state.reportback.reportback_items.data[this.state.selectedItemIndex];
+    var reportbackItem = this.props.reportback.reportback_items.data[this.state.selectedItemIndex];
     var date = Helpers.formatTimestamp(reportbackItem.created_at);
     return (
       <div className="panel panel-default">
         <div className="panel-body row">
           <div className="col-md-8">
           <Carousel
-            key={this.state.reportback.id}
+            key={this.props.reportback.id}
             bumpIndex={this.bumpIndex}
-            data={this.state.reportback.reportback_items.data}
-            reportback={this.state.reportback}
+            data={this.props.reportback.reportback_items.data}
+            reportback={this.props.reportback}
             reportbackItem={reportbackItem}
           />
           </div>
           <div className="col-md-4">
-            <MemberSummary user={this.state.reportback.user} />
-            <h3>{this.state.reportback.quantity} <small>{label}</small></h3>
+            <MemberSummary user={this.props.reportback.user} />
+            <h3>{this.props.reportback.quantity} <small>{label}</small></h3>
             <ul className="list-group">
               <li className="list-group-item">
-                <small>{date} <span className="pull-right">{this.state.selectedItemIndex+1} / {this.state.reportback.reportback_items.data.length}</span></small>
+                <small>{date} <span className="pull-right">{this.state.selectedItemIndex+1} / {this.props.reportback.reportback_items.data.length}</span></small>
               </li>
             </ul>
-            <ReportbackItemForm 
+            <ReportbackItemView 
               key={reportbackItem.id}
               postReview={this.postReview}
-              reportbackItem={reportbackItem}
+              status={reportbackItem.status}
             />
           </div>
         </div>
@@ -71,25 +67,34 @@ export default React.createClass({
   },
 });
 
-var ReportbackStatusIcon = React.createClass({
-  className: function() {
-    switch(this.props.status) {
-      case 'approved':
-        return 'ok';
-      case 'promoted':
-        return 'heart';
-      case 'excluded':
-        return 'remove';
-      case 'flagged':
-        return 'trash';
-      }
-    return null;
+var ReportbackItemView = React.createClass({
+  getInitialState: function() {
+    return {
+      status: this.props.status,
+    };  
+  },
+  postReview: function(status) {
+    this.setState({
+      status: status,
+      reviewedAt: Date.now() / 1000,
+    });
+    this.props.postReview(status);
   },
   render: function() {
-    var className = 'glyphicon glyphicon-' + this.className();
+    if (this.state.status) {
+      // @todo time not working yet
+      var time = Helpers.formatTimestamp(this.state.reviewedAt);
+      return (
+        <small>
+          <ReportbackStatusIcon status={this.state.status} /> {this.state.status}
+        </small>
+      );
+    }
     return (
-      <span className={className} aria-hidden="true"></span>  
-    );   
+      <ReportbackItemForm 
+        postReview={this.postReview}
+      />
+    );
   }
 });
 
@@ -99,14 +104,13 @@ var ReportbackItemForm = React.createClass({
   },
   getInitialState: function() {
     return {
-      action: null,
+      reportbackItem: this.props.reportbackItem,
       enabled: true,
       submitted: null,
     };
   },
   onKeyDown: function(e) {
     var status = null;
-    console.log(e.keyCode);
     switch(e.keyCode) {
       // f
       case 70:
@@ -135,22 +139,8 @@ var ReportbackItemForm = React.createClass({
   },
   postReview: function(status) {
     this.props.postReview(status);
-    this.setState({
-      action: status,
-      enabled: false,
-      submitted: Date.now(),
-    });
   },
   render: function() {
-    if (!this.state.enabled) {
-      return (
-        <table className="table">
-          <tr><td>
-            <small><ReportbackStatusIcon status={this.state.action} /> <strong>{this.state.action}</strong> by Carol {Helpers.formatTimestamp(this.state.submitted / 1000)}</small>
-          </td></tr>
-        </table>
-      );
-    }
     return (
       <div className="well">
         <small>publish?</small>
@@ -170,6 +160,28 @@ var ReportbackItemForm = React.createClass({
       </div>
     );
   },
+});
+
+var ReportbackStatusIcon = React.createClass({
+  className: function() {
+    switch(this.props.status) {
+      case 'approved':
+        return 'ok';
+      case 'promoted':
+        return 'heart';
+      case 'excluded':
+        return 'remove';
+      case 'flagged':
+        return 'trash';
+      }
+    return null;
+  },
+  render: function() {
+    var className = 'glyphicon glyphicon-' + this.className();
+    return (
+      <span className={className} aria-hidden="true"></span>  
+    );   
+  }
 });
 
 var Carousel = React.createClass({

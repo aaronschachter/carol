@@ -21,6 +21,13 @@ export default React.createClass({
         return res.json();
       })
       .then((json) => {
+        var reportbacks = json.data;
+        // Hardcode all item statuses to null for testing postReview / state.
+        for (var i=0; i < reportbacks.length; i++) {
+          for (var j=0; j < reportbacks[i].reportback_items.data.length; j++) {
+            reportbacks[i].reportback_items.data[j].status = null;
+          }
+        }
         this.setState({
           inbox: json.data,
           loaded: true,
@@ -33,6 +40,13 @@ export default React.createClass({
       loaded: false,
       selectedIndex: 0,
     };
+  },
+  // @todo: Need to pass currentItemIndex as well
+  postReview: function(status) {
+    var selectedReportback = this.state.inbox[this.state.selectedIndex];
+    selectedReportback.reportback_items.data[0].status = status;
+//    selectedReportback.reportback_items.data[0].reviewed = reviewedAt;
+    this.state.inbox[this.state.selectedIndex] = selectedReportback;
   },
   render() {
     // @todo DRY with Campaigns.get util
@@ -59,7 +73,8 @@ export default React.createClass({
           <Reportback
             campaign={reportback.campaign}
             key={reportback.id} 
-            reportback={reportback} 
+            reportback={reportback}
+            postReview={this.postReview}
           />
         </CSSTransitionGroup>
       );
