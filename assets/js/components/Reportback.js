@@ -24,10 +24,10 @@ export default React.createClass({
       selectedItemIndex: 0,
     };
   },
-  postReview: function(status) {
+  postReview: function(status, timestamp) {
     // @todo Post to DS API
     if (this.props.postReview) {
-      this.props.postReview(status);
+      this.props.postReview(status, timestamp);
     }
   },
   render() {
@@ -59,6 +59,7 @@ export default React.createClass({
               key={reportbackItem.id}
               postReview={this.postReview}
               status={reportbackItem.status}
+              reviewedAt={reportbackItem.reviewed_at}
             />
           </div>
         </div>
@@ -71,22 +72,23 @@ var ReportbackItemView = React.createClass({
   getInitialState: function() {
     return {
       status: this.props.status,
+      reviewedAt: this.props.reviewedAt,
     };  
   },
   postReview: function(status) {
+    var timestamp = Date.now() / 1000;
     this.setState({
       status: status,
-      reviewedAt: Date.now() / 1000,
+      reviewedAt: timestamp,
     });
-    this.props.postReview(status);
+    this.props.postReview(status, timestamp);
   },
   render: function() {
     if (this.state.status) {
-      // @todo time not working yet
       var time = Helpers.formatTimestamp(this.state.reviewedAt);
       return (
         <small>
-          <ReportbackStatusIcon status={this.state.status} /> {this.state.status}
+          <ReportbackStatusIcon status={this.state.status} /> <strong>{this.state.status}</strong> {time}
         </small>
       );
     }
