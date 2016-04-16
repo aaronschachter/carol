@@ -16,7 +16,9 @@ export default React.createClass({
     		        <span className="icon-bar"></span>
     		        <span className="icon-bar"></span>
     		      </button>
-    		      <a className="navbar-brand"><img src="https://raw.githubusercontent.com/DoSomething/LetsDoThis-iOS/develop/Lets%20Do%20This/Images.xcassets/DS%20Logo.imageset/DS%20Logo.png" height="20" width="25" /></a>
+    		      <a className="navbar-brand">
+                    <img src="/images/logo.png" height="20" width="20" />
+                    </a>
     		    </div>
     		    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     		      <ul className="nav navbar-nav">
