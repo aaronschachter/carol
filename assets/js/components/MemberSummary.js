@@ -1,5 +1,5 @@
 import React from 'react'
-import NavLink from './NavLink'
+import {Link} from 'react-router'
 
 export default React.createClass({
   render: function() {
@@ -13,7 +13,7 @@ export default React.createClass({
       photo = this.props.user.photo;
     }
     return (
-      <NavLink to={profileUrl}>
+      <Link to={profileUrl} target="_blank">
         <div className="media">
           <div className="media-left">
             <img className="media-object img-circle avatar" src={photo} />
@@ -23,7 +23,7 @@ export default React.createClass({
             <small>UNITED STATES</small>
           </div>
         </div>
-      </NavLink>
+      </Link>
     );
   }
 });
