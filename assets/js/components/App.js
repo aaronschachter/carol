@@ -31,7 +31,7 @@ export default React.createClass({
     		          <ul className="dropdown-menu">
     		            <li><a href="#">Reviews</a></li>
     		            <li role="separator" className="divider"></li>
-    		            <li><a href="#">Logout</a></li>
+    		            <li><a href="#"><small>Logout</small></a></li>
     		          </ul>
     		        </li>
     		      </ul>
