@@ -110,10 +110,10 @@ export default React.createClass({
 var Controls = React.createClass({
   onKeyDown: function(e) {
     if (e.keyCode == 37) {
-      document.getElementById("prev-entry").click();
+      this.pagerClick(-1);
     }
     else if (e.keyCode == 39) {
-      document.getElementById("next-entry").click();
+      this.pagerClick(1);
     }
   },
   componentDidMount: function() {
