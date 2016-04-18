@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-import ReportbackItem from './ReportbackItem'
+import GalleryItem from './GalleryItem'
 
 export default React.createClass({
   componentDidMount: function() {
@@ -38,13 +38,24 @@ export default React.createClass({
     var title = localStorage['campaign_' + campaignId + '_title'];
     var tagline = localStorage['campaign_' + campaignId + '_tagline'];
     var reportbackItems = this.state.gallery.map(function(reportbackItem) {
+      // @todo: Move this into a storage.users.add function
+      var user = reportbackItem.user;
+      if (user.first_name) {
+        localStorage['user_' + user.id + '_first_name'] = user.first_name;
+      }
+      if (user.photo) {
+        localStorage['user_' + user.id + '_photo'] = user.photo;
+      }
+      //  @TODO permalink to Reportback instead.
+      var url = '/members/' + user.id;
       return (
-        <div className="col-md-3">
-          <ReportbackItem 
-            reportbackItem={reportbackItem} 
-            key={reportbackItem.id} 
-          />
-        </div>
+        <GalleryItem 
+          key={reportbackItem.id}
+          caption={reportbackItem.caption.substring(0,60)}
+          href={url}
+          imgSrc={reportbackItem.media.uri}
+          reportbackItem={reportbackItem}
+        />
       );
     });
     return (
