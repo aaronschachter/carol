@@ -103,10 +103,10 @@ export default React.createClass({
 var Controls = React.createClass({
   onKeyDown: function(e) {
     if (e.keyCode == 37) {
-      this.pagerClick(-1);
+      document.getElementById("prev-entry").click();
     }
     else if (e.keyCode == 39) {
-      this.pagerClick(1);
+      document.getElementById("next-entry").click();
     }
   },
   componentDidMount: function() {
@@ -135,13 +135,21 @@ var Controls = React.createClass({
       <nav>
         <ul className="pager inbox-pager">
           <li className="previous">
-            <span onClick={this.pagerClick.bind(this, -1)} className="glyphicon glyphicon-chevron-left" />
+            <a id="prev-entry" onClick={this.pagerClick.bind(this, -1)}>
+              <span className="glyphicon glyphicon-chevron-left" />
+            </a>
           </li>
           <li>
-            <small><span className="glyphicon glyphicon-inbox"></span> {this.props.inboxIndex + 1} / {this.props.inboxLength} </small>
+            <span>
+              <small>
+              <span className="glyphicon glyphicon-inbox"></span> {this.props.inboxIndex + 1} / {this.props.inboxLength}
+              </small>
+            </span>
           </li>
           <li className="next">
-            <span onClick={this.pagerClick.bind(this, 1)} className="glyphicon glyphicon-chevron-right" />
+            <a id="next-entry" onClick={this.pagerClick.bind(this, 1)}>
+              <span className="glyphicon glyphicon-chevron-right" />
+            </a>
           </li>
         </ul>
       </nav>
