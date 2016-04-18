@@ -17,7 +17,9 @@ export default React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
-    this.fetchData();
+    if (!this.props.children) {
+      this.fetchData();
+    }
   },
   render: function() {
     // If a child exists, this is a single Campaign view:
@@ -41,7 +43,9 @@ export default React.createClass({
             </ul>
           </div>
           <div className="col-md-9">
-            <CampaignsTable data={this.state.data} />
+            <CampaignsTable
+              data={this.state.data}
+            />
           </div>
         </div>
       </div>
