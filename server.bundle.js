@@ -326,8 +326,7 @@
 	  value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // modules/NavLink.js
-
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _react = __webpack_require__(1);
 
@@ -376,23 +375,32 @@
 	  displayName: 'Campaign',
 
 	  componentDidMount: function componentDidMount() {
-	    this.fetchData(this.props.params.campaignId);
+	    this.fetchCampaign(this.props.params.campaignId);
 	  },
-	  fetchData: function fetchData(campaignId) {
+	  fetchCampaign: function fetchCampaign(campaignId) {
 	    var _this = this;
 
-	    var galleryUrl = 'https://www.dosomething.org/api/v1/reportback-items.json?campaigns=' + campaignId + '&load_user=true';
-	    fetch(galleryUrl).then(function (res) {
+	    var url = 'https://www.dosomething.org/api/v1/campaigns/' + campaignId;
+	    fetch(url).then(function (res) {
 	      return res.json();
 	    }).then(function (json) {
-	      // @todo - shouldnt set campaign this way in case of no results
-	      if (json.data.length > 0) {
-	        _this.state.campaign = json.data[0].campaign;
-	      }
 	      _this.setState({
+	        campaign: json.data,
+	        campaignLoaded: true
+	      });
+	      _this.fetchGallery(_this.state.campaign.id);
+	    });
+	  },
+	  fetchGallery: function fetchGallery(campaignId) {
+	    var _this2 = this;
+
+	    var url = 'https://www.dosomething.org/api/v1/reportback-items?campaigns=' + campaignId + '&load_user=true';
+	    fetch(url).then(function (res) {
+	      return res.json();
+	    }).then(function (json) {
+	      _this2.setState({
 	        gallery: json.data,
-	        galleryLoaded: true,
-	        campaign: _this.state.campaign
+	        galleryLoaded: true
 	      });
 	    });
 	  },
@@ -404,14 +412,14 @@
 	    };
 	  },
 	  render: function render() {
-	    var title, tagline;
-	    var campaignId = this.props.params.campaignId;
-	    var inboxUrl = '/campaigns/' + campaignId + '/inbox';
-	    if (localStorage) {
-	      title = localStorage['campaign_' + campaignId + '_title'];
-	      tagline = localStorage['campaign_' + campaignId + '_tagline'];
+	    if (!this.state.campaignLoaded) {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Loading'
+	      );
 	    }
-
+	    var inboxUrl = '/campaigns/' + this.state.campaign.id + '/inbox';
 	    var reportbackItems = this.state.gallery.map(function (reportbackItem) {
 	      // @todo: Move this into a storage.users.add function
 	      var user = reportbackItem.user;
@@ -439,12 +447,12 @@
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          title
+	          this.state.campaign.title
 	        ),
 	        _react2.default.createElement(
 	          'p',
 	          null,
-	          tagline
+	          this.state.campaign.tagline
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -559,7 +567,9 @@
 	    });
 	  },
 	  getInitialState: function getInitialState() {
-	    return { data: [] };
+	    return {
+	      data: []
+	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    if (!this.props.children) {
@@ -671,12 +681,7 @@
 	  displayName: 'CampaignsListItem',
 
 	  render: function render() {
-	    var campaignId = this.props.campaign.id.toString();
-	    if (localStorage) {
-	      localStorage['campaign_' + campaignId + '_title'] = this.props.campaign.title;
-	      localStorage['campaign_' + campaignId + '_tagline'] = this.props.campaign.tagline;
-	    }
-	    var url = '/campaigns/' + campaignId;
+	    var url = '/campaigns/' + this.props.campaign.id.toString();
 	    return _react2.default.createElement(
 	      _NavLink2.default,
 	      { className: 'list-group-item', to: url },
@@ -721,6 +726,7 @@
 
 	exports.default = _react2.default.createClass({
 			displayName: "SearchForm",
+
 			render: function render() {
 					return _react2.default.createElement(
 							"div",
@@ -743,7 +749,7 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -756,12 +762,25 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Home',
+	  displayName: "Home",
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      'Home'
+	      "div",
+	      { className: "container" },
+	      _react2.default.createElement(
+	        "div",
+	        { className: "page-header" },
+	        _react2.default.createElement(
+	          "h1",
+	          null,
+	          "Guardian"
+	        ),
+	        _react2.default.createElement(
+	          "p",
+	          null,
+	          "Welcome, fellow guardian of the Gallery."
+	        )
+	      )
 	    );
 	  }
 	});
@@ -793,6 +812,12 @@
 	var _Reportback2 = _interopRequireDefault(_Reportback);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 *
+	 * Note: For now, this won't work when we visit /inbox URL directly on server
+	 *
+	 */
 
 	exports.default = _react2.default.createClass({
 	  displayName: 'Inbox',
@@ -843,6 +868,7 @@
 	    // @todo DRY with Campaigns.get util
 	    var campaignId = this.props.params.campaignId;
 	    var campaignUrl = '/campaigns/' + campaignId;
+	    // @todo This will break if we directly visit the URL
 	    var title = localStorage['campaign_' + campaignId + '_title'];
 	    var tagline = localStorage['campaign_' + campaignId + '_tagline'];
 	    var content, reportback;
@@ -1372,6 +1398,7 @@
 	    var firstName = 'Doer';
 	    var photo = "/images/avatar.png";
 	    var profileUrl = '/members/' + this.props.user.id;
+	    // @todo DRY logic into utils User.get()
 	    if (this.props.user.first_name) {
 	      firstName = this.props.user.first_name;
 	    }
@@ -1450,6 +1477,7 @@
 
 	exports.default = _react2.default.createClass({
 	  displayName: 'Members',
+
 	  render: function render() {
 	    if (this.props.children) {
 	      return this.props.children;

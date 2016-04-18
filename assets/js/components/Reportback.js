@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import MemberSummary from './MemberSummary'
-import NavLink from './NavLink'
-import Helpers from '../utils/Helpers.js'
+import MemberSummary from './MemberSummary';
+import NavLink from './NavLink';
+import Helpers from '../utils/Helpers.js';
 
 export default React.createClass({
   bumpIndex: function(increment) {
@@ -30,7 +30,7 @@ export default React.createClass({
       this.props.postReview(status, timestamp, this.state.selectedItemIndex);
     }
   },
-  render() {
+  render: function() {
     var campaignUrl = '/campaigns/' + this.props.campaign.id;
     var label = this.props.campaign.reportback_info.noun + ' ' + this.props.campaign.reportback_info.verb;
     var reportbackItem = this.props.reportback.reportback_items.data[this.state.selectedItemIndex];

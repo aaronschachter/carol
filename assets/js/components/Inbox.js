@@ -1,8 +1,14 @@
-import React from 'react'
+import React from 'react';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import NavLink from './NavLink'
 import Reportback from './Reportback';
+
+/**
+ *
+ * Note: For now, this won't work when we visit /inbox URL directly on server
+ *
+ */
 
 export default React.createClass({
   bumpIndex: function(increment) {
@@ -47,10 +53,11 @@ export default React.createClass({
     selectedReportback.reportback_items.data[reportbackItemIndex].reviewed_at = timestamp;
     this.state.inbox[this.state.selectedIndex] = selectedReportback;
   },
-  render() {
+  render: function() {
     // @todo DRY with Campaigns.get util
     var campaignId = this.props.params.campaignId;
     var campaignUrl = '/campaigns/' + campaignId;
+    // @todo This will break if we directly visit the URL
     var title = localStorage['campaign_' + campaignId + '_title'];
     var tagline = localStorage['campaign_' + campaignId + '_tagline'];
     var content, reportback;

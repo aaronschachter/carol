@@ -1,6 +1,7 @@
-import React from 'react'
-import NavLink from './NavLink'
-import SearchForm from './SearchForm'
+import React from 'react';
+
+import NavLink from './NavLink';
+import SearchForm from './SearchForm';
 
 export default React.createClass({
   fetchData: function() {
@@ -12,10 +13,12 @@ export default React.createClass({
         this.setState({
           data: json.data,
         });
-      })
+      });
   },
   getInitialState: function() {
-    return {data: []};
+    return {
+      data: []
+    };
   },
   componentDidMount: function() {
     if (!this.props.children) {

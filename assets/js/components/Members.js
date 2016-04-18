@@ -1,8 +1,9 @@
-import React from 'react'
-import SearchForm from './SearchForm'
+import React from 'react';
+
+import SearchForm from './SearchForm';
 
 export default React.createClass({
-  render() {
+  render: function() {
     if (this.props.children) {
       return this.props.children;
     }
@@ -14,4 +15,4 @@ export default React.createClass({
       </div>
     );
   }
-})
+});

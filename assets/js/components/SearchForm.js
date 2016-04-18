@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 export default React.createClass({
-  render() {
+  render: function() {
     return (
 	  <div className="input-group">
 	    <input type="text" className="form-control" placeholder="Search for..." />
@@ -13,4 +13,4 @@ export default React.createClass({
 	  </div>
     );
   }
-})
+});
