@@ -2,7 +2,7 @@
   "name": "carol",
   "version": "0.0.0",
   "description": "Fighter of walkers",
-  "main": "index.js",
+  "main": "client.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:dev": "webpack-dev-server --inline --content-base dist/ --history-api-fallback",
