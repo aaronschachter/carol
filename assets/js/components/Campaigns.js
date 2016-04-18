@@ -6,8 +6,9 @@ export default React.createClass({
   fetchData: function() {
     fetch('https://www.dosomething.org/api/v1/campaigns?count=100')
       .then((res) => {
-          return res.json();
-      }).then((json) => {
+        return res.json();
+      })
+      .then((json) => {
         this.setState({
           data: json.data,
         });
@@ -73,10 +74,7 @@ var CampaignsTable = React.createClass({
 
 var CampaignsListItem = React.createClass({
   render: function() {
-    var campaignId = this.props.campaign.id.toString();
-    localStorage['campaign_' + campaignId + '_title'] = this.props.campaign.title;
-    localStorage['campaign_' + campaignId + '_tagline'] = this.props.campaign.tagline;
-    var url = '/campaigns/' + campaignId;
+    var url = '/campaigns/' +  this.props.campaign.id.toString();
     return (
       <NavLink className="list-group-item" to={url}>
         <h3>{this.props.campaign.title}</h3>
